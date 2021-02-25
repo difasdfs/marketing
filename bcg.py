@@ -38,6 +38,10 @@ grossProfit_101116 = 0
 totalPenjualan_101117 = 0
 grossProfit_101117 = 0
 
+# Paket Crisbee Gravy
+totalPenjualan_101120 = 0
+grossProfit_101120 = 0
+
 # Paket 4 Chiken Skin
 totalPenjualan_102001 = 0
 grossProfit_102001 = 0
@@ -127,7 +131,7 @@ grossProfit_7000005 = 0
 totalPenjualan_7000008 = 0
 grossProfit_7000008 = 0
 
-# Pudding Milo Dino
+# Perkedel
 totalPenjualan_7000009 = 0
 grossProfit_7000009 = 0
 
@@ -183,6 +187,11 @@ for isi in baris:
     elif (sku[:-2] == "101117"):
         totalPenjualan_101117 += int(totalPenjualan)
         grossProfit_101117 += int(grossProfit)
+
+    # Paket Crisbee Gravy
+    elif (sku[:-2] == '101120'):
+        totalPenjualan_101120 += int(totalPenjualan)
+        grossProfit_101120 += int(grossProfit)
 
     # Paket 4 Chiken Skin
     elif (sku[:-2] == "102001"):
@@ -294,15 +303,16 @@ for isi in baris:
         totalPenjualan_7000008 += int(totalPenjualan)
         grossProfit_7000008 += int(grossProfit)
 
-    # Pudding Milo Dino
+    # Perkedel
     elif (sku[:-1] == "7000009"):
         totalPenjualan_7000009 += int(totalPenjualan)
         grossProfit_7000009 += int(grossProfit)
 
-    # Pudding Milo Dino
+    # 3 Kol Crispy
     elif (sku[:-1] == "7000010"):
         totalPenjualan_7000010 += int(totalPenjualan)
         grossProfit_7000010 += int(grossProfit)
+
 
 # Minuman
 # Variabel
@@ -341,6 +351,34 @@ varMinuman = [totalPenjualan_lemontea, totalPenjualan_milo,
               totalPenjualan_orange, totalPenjualan_esteh]
 namaMinuman = ('Lemontea/Lemonade', 'Milo', 'Orange', 'Es Teh')
 
+
+# DESSERT
+
+# Sigulmer
+totalPenjualan_sigulmer = 0
+grossProfit_sigulmer = 0
+
+# Pudding Milo Dino
+totalPenjualan_pudding_milo_dino = 0
+grossProfit_pudding_milo_dino = 0
+
+for isi in baris[1:]:
+    isi = isi.split(',')
+    sku = isi[1]
+    totalPenjualan = int(isi[4][:-3])
+    grossProfit = int(isi[10][:-3])
+
+    # Sigulmer
+    if (sku[:-1] == '5000001'):
+        totalPenjualan_sigulmer += totalPenjualan
+        grossProfit_sigulmer += grossProfit
+
+    # Pudding Milo Dino
+    elif (sku[:-1] == "5000002"):
+        totalPenjualan_pudding_milo_dino += totalPenjualan
+        grossProfit_pudding_milo_dino += grossProfit
+
+
 # buat bcg minuman
 namaFilePaket = "minuman - " + namaFile
 tulis_file = open(namaFilePaket, "w")
@@ -362,6 +400,7 @@ totalPenjualanPaket = (
     totalPenjualan_101115,
     totalPenjualan_101116,
     totalPenjualan_101117,
+    totalPenjualan_101120,
     totalPenjualan_102001,
     totalPenjualan_102002,
     totalPenjualan_102110,
@@ -390,6 +429,7 @@ totalGrossProfitPaket = (
     grossProfit_101115,
     grossProfit_101116,
     grossProfit_101117,
+    grossProfit_101120,
     grossProfit_102001,
     grossProfit_102002,
     grossProfit_102110,
@@ -416,6 +456,7 @@ namaPaket = (
     "Paket Ayam Keju",
     "Paket Ayam Manis",
     "Paket Ayam Goang",
+    "Paket Crisbee Gravy",  
     "Paket 4 Chiken Skin",
     "Paket Side Dish",
     "Raksasa Crisbar",
@@ -472,7 +513,7 @@ namaSideDish = (
     "Telur Sayur",
     "Chiken Skin",
     "Kerupuk",
-    "Pudding Milo Dino",
+    "Perkedel",
     "Kol Crispy"
 )
 
@@ -481,14 +522,15 @@ for isi in totalPenjualanSideDish:
     persenPenjualanSideDish.append(isi/jumlah_totalPenjualanSideDish)
 
 # buat bcg paket
-namaFilePaket = "paket - " + namaFile
+namaFilePaket = "Paket - " + namaFile
 tulis_file = open(namaFilePaket, "w")
-tulis_file.write("nama paket,gross profit,total penjualan,persen penjualan\n")
+tulis_file.write("nama paket;gross profit;total penjualan;persen penjualan\n")
 
 for i in range(len(totalPenjualanPaket)):
-    persenan = str(persenPenjualanPaket[i]*100)
-    tulis_file.write(namaPaket[i] + "," + str(totalGrossProfitPaket[i]) +
-                     "," + str(totalPenjualanPaket[i]) + "," + persenan + "\n")
+    persenan = str(persenPenjualanPaket[i]*100).split('.')
+    persenan = persenan[0] + ',' + persenan[1][:2]
+    tulis_file.write(namaPaket[i] + ";" + str(totalGrossProfitPaket[i]) +
+                     ";" + str(totalPenjualanPaket[i]) + ";" + persenan + "\n")
 
 tulis_file.close()
 
@@ -496,11 +538,46 @@ tulis_file.close()
 namaFileSideDish = "Side Dish - " + namaFile
 tulis_file = open(namaFileSideDish, "w")
 tulis_file.write(
-    "nama side dish,gross profit,total penjualan,persen penjualan\n")
+    "nama side dish;gross profit;total penjualan;persen penjualan\n")
 
 for i in range(len(totalPenjualanSideDish)):
-    persenan = str(persenPenjualanSideDish[i]*100)
-    tulis_file.write(namaSideDish[i] + "," + str(totalGrossProfitSideDish[i]) +
-                     "," + str(totalPenjualanSideDish[i]) + "," + persenan + "\n")
+    persenan = str(persenPenjualanSideDish[i]*100).split('.')
+    persenan = persenan[0] + ',' + persenan[1][:2]
+    tulis_file.write(namaSideDish[i] + ";" + str(totalGrossProfitSideDish[i]) +
+                     ";" + str(totalPenjualanSideDish[i]) + ";" + persenan + "\n")
+
+tulis_file.close()
+
+# Buat BCG Dessert
+
+totalPenjualanDessert = (
+	totalPenjualan_sigulmer,
+	totalPenjualan_pudding_milo_dino
+)
+
+jumlah_totalPenjualanDessert = sum(totalPenjualanDessert)
+
+totalGrossProfitDessert = (
+	grossProfit_sigulmer,
+	grossProfit_pudding_milo_dino
+)
+
+namaDessert = (
+	"Sigulmer",
+	"Pudding Milo Dino",
+)
+
+persenPejualanDessert = []
+for isi in totalPenjualanDessert:
+	persenPejualanDessert.append(isi/jumlah_totalPenjualanDessert)
+
+namaFileDessert = "Dessert - " + namaFile
+tulis_file = open(namaFileDessert, 'w')
+tulis_file.write("Nama Dessert; Gross Profit; Total Penjualan; Persen Penjualan\n")
+
+for i in range(len(totalPenjualanDessert)):
+    persenan = str(persenPejualanDessert[i]*100).split('.')
+    persenan = persenan[0] + ',' + persenan[1][:2]
+    tulis_file.write(namaDessert[i] + ";" + str(totalGrossProfitDessert[i]) + ";" + str(totalPenjualanDessert[i]) + ";" + persenan + "\n")
 
 tulis_file.close()
